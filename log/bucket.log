@@ -1,0 +1,3 @@
+2026-03-28T14:30:32.730Z [dust:bucket:agent-capabilities] probe failed for claude: spawn claude ENOENT
+2026-03-28T14:30:32.731Z [dust:bucket:agent-capabilities] probe failed for codex: spawn codex ENOENT
+2026-03-28T14:30:32.872Z [dust:cli:commands:bucket] ws message: connection-ready

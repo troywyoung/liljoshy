@@ -16,6 +16,7 @@ import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
 import UseCases from "@/components/UseCases";
 import CrumbDots from "@/components/CrumbDots";
+import SocialProof from "@/components/SocialProof";
 
 export default function Home() {
   return (
@@ -41,6 +42,7 @@ export default function Home() {
       <ComparisonTable />
       <Pricing />
       <FAQ />
+      <SocialProof />
       <FinalCTA />
       <Footer />
     </main>

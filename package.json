@@ -4,10 +4,12 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "start": "bun run index.ts"
+    "start": "bun run index.ts",
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
     "@joshski/dust": "^0.1.106",
+    "@playwright/test": "^1.58.2",
     "@types/bun": "latest"
   },
   "peerDependencies": {

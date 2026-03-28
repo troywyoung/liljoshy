@@ -26,11 +26,13 @@ export default function GroundingParagraph() {
           margin: 0,
         }}
       >
-        Crumb is a workflow layer on top of Claude Code. By itself, Claude Code
-        is a capable agent&nbsp;&mdash; but it has no persistent memory, no spec
-        format, no quality gates, and no async orchestration. Every session
-        starts from scratch. Crumb adds all of that, so every session builds on
-        the last.
+        Dust is a lightweight planning system that stores project context as
+        markdown artifacts. AI agents need structure to work
+        effectively&nbsp;&mdash; without it, they lose context, forget
+        requirements, and make inconsistent decisions. Dust structures your
+        project so agents can understand what needs to be done and execute
+        systematically, reading artifacts to pick tasks and committing changes
+        atomically.
       </motion.p>
     </div>
   );

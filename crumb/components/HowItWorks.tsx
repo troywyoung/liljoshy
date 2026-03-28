@@ -1,67 +1,168 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useState } from "react";
 
-const steps = [
+const artifactTypes = [
   {
-    number: "01",
-    label: "IDEA",
-    title: "Capture the idea",
-    body:
-      "Drop a thought, voice note, or rough outline into Crumb. It structures it into a draft spec — goals, constraints, success criteria — and stores it permanently in your repo.",
-    time: "2 min",
+    name: "Tasks",
+    icon: "📋",
+    summary: "Actionable work with definitions of done",
+    details:
+      "Each task is a markdown file in .dust/tasks/ with clear requirements, context, and success criteria. Tasks define what needs to be done before work begins.",
   },
   {
-    number: "02",
-    label: "REFINE",
-    title: "Refine the spec",
-    body:
-      "Review and tighten the spec in Crumb's editor. Add acceptance tests, edge cases, and examples. Your agent will read exactly this — no more ambiguity.",
-    time: "5 min",
+    name: "Ideas",
+    icon: "💡",
+    summary: "Proposals waiting to be refined",
+    details:
+      "Ideas are markdown files in .dust/ideas/ that capture future work. They can be rough or detailed. Ideas get decomposed into tasks when you're ready to implement them.",
   },
   {
-    number: "03",
-    label: "TASK",
-    title: "Break into tasks",
-    body:
-      "Crumb decomposes the spec into a prioritized task list. Reorder, merge, or delete tasks before handing off. Each task has explicit inputs, outputs, and test criteria.",
-    time: "3 min",
+    name: "Principles",
+    icon: "🎯",
+    summary: "Guiding values and design constraints",
+    details:
+      "Principles live in .dust/principles/ and describe how decisions should be made. They provide consistent guidance across all work in the repository.",
   },
   {
-    number: "04",
-    label: "EXECUTE",
-    title: "Agent runs async",
-    body:
-      "Kick off the session and close your laptop. Claude Code works through the task list, commits incrementally, and logs every decision. You get a full audit trail when it's done.",
-    time: "Async",
-  },
-  {
-    number: "05",
-    label: "GUARD",
-    title: "Quality gates check",
-    body:
-      "Before surfacing results, Crumb runs your configured gates: tests, lint, type checks, and coverage thresholds. If anything fails, it retries with the error context automatically.",
-    time: "Auto",
-  },
-  {
-    number: "06",
-    label: "SHIP",
-    title: "Review and ship",
-    body:
-      "Open your Crumb dashboard to a completed PR with a structured summary, diff, cost breakdown, and test results. One click to approve — or leave feedback for the next iteration.",
-    time: "2 min",
+    name: "Facts",
+    icon: "📄",
+    summary: "Documentation of current system state",
+    details:
+      "Facts in .dust/facts/ capture how things work today. They provide essential context about architecture, decisions, and the current state of the codebase.",
   },
 ];
 
+const workflowSteps = [
+  {
+    number: "01",
+    label: "CAPTURE",
+    title: "Create artifacts in .dust/",
+    body: "Write tasks, ideas, principles, or facts as markdown files in the .dust/ directory. Structure emerges from the filesystem.",
+  },
+  {
+    number: "02",
+    label: "PICK",
+    title: "Agent reads context and selects a task",
+    body: "Run dust agent. It reads available tasks, checks blockers, and picks the next task to implement based on priority and dependencies.",
+  },
+  {
+    number: "03",
+    label: "IMPLEMENT",
+    title: "Agent makes changes defined in task",
+    body: "The agent implements the task following the requirements. It reads linked principles and facts for context, then writes code and tests.",
+  },
+  {
+    number: "04",
+    label: "COMMIT",
+    title: "Atomic commit including task deletion",
+    body: "Each commit bundles implementation changes with task deletion and documentation updates. One complete story per commit.",
+  },
+  {
+    number: "05",
+    label: "REPEAT",
+    title: "Continue until backlog is clear",
+    body: "dust agent picks the next task automatically. The workflow repeats until all unblocked tasks are complete.",
+  },
+];
+
+/* ─── Artifact type card with progressive disclosure ─── */
+function ArtifactCard({ artifact }: { artifact: typeof artifactTypes[number] }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4 }}
+      style={{
+        backgroundColor: "#FFFFFF",
+        border: "1px solid #D4CFC6",
+        borderRadius: 12,
+        padding: "20px",
+        cursor: "pointer",
+        transition: "border-color 0.2s",
+      }}
+      onClick={() => setIsExpanded(!isExpanded)}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.borderColor = "#E8622A";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.borderColor = "#D4CFC6";
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
+        <span style={{ fontSize: 28 }}>{artifact.icon}</span>
+        <h3
+          style={{
+            fontFamily: "var(--font-bitter), Georgia, serif",
+            fontSize: 18,
+            fontWeight: 700,
+            color: "#1C2B3A",
+            margin: 0,
+            flex: 1,
+          }}
+        >
+          {artifact.name}
+        </h3>
+        <motion.span
+          animate={{ rotate: isExpanded ? 180 : 0 }}
+          transition={{ duration: 0.2 }}
+          style={{ color: "#7A6F66", fontSize: 20 }}
+        >
+          ▾
+        </motion.span>
+      </div>
+      <p
+        style={{
+          fontSize: 13,
+          color: "#7A6F66",
+          lineHeight: 1.6,
+          margin: 0,
+        }}
+      >
+        {artifact.summary}
+      </p>
+      <motion.div
+        initial={false}
+        animate={{
+          height: isExpanded ? "auto" : 0,
+          opacity: isExpanded ? 1 : 0,
+          marginTop: isExpanded ? 12 : 0,
+        }}
+        transition={{ duration: 0.3 }}
+        style={{
+          overflow: "hidden",
+        }}
+      >
+        <p
+          style={{
+            fontSize: 13,
+            color: "#7A6F66",
+            lineHeight: 1.6,
+            margin: 0,
+            paddingTop: 12,
+            borderTop: "1px solid #EDE8DF",
+          }}
+        >
+          {artifact.details}
+        </p>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 /* ─── Hand-drawn number circle ─── */
-function NumberCircle({ number, accent }: { number: string; accent: boolean }) {
+function NumberCircle({ number }: { number: string }) {
   return (
     <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
       {/* Double-stroked hand-drawn circle for extra weight */}
       <path
         d={`M30 5 C42 4 56 14 55.5 30 C55 46 42 56 30 55.5 C18 55 4 45 4.5 30 C5 15 18 5.5 30 5 Z`}
-        fill={accent ? "rgba(232,98,42,0.10)" : "none"}
-        stroke={accent ? "#E8622A" : "#D4CFC6"}
+        fill="rgba(232,98,42,0.10)"
+        stroke="#E8622A"
         strokeWidth="3.5"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -70,7 +171,7 @@ function NumberCircle({ number, accent }: { number: string; accent: boolean }) {
       <path
         d={`M30 6.5 C41 5.5 54.5 15 54 30 C53.5 44.5 41.5 54.5 30 54 C19 53.5 5.5 44 6 30 C6.5 16 19 6.5 30 6.5 Z`}
         fill="none"
-        stroke={accent ? "#E8622A" : "#D4CFC6"}
+        stroke="#E8622A"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -84,7 +185,7 @@ function NumberCircle({ number, accent }: { number: string; accent: boolean }) {
         fontFamily="var(--font-bitter), Georgia, serif"
         fontSize="20"
         fontWeight="900"
-        fill={accent ? "#E8622A" : "#1C2B3A"}
+        fill="#E8622A"
         letterSpacing="-0.02em"
       >
         {number}
@@ -93,13 +194,12 @@ function NumberCircle({ number, accent }: { number: string; accent: boolean }) {
   );
 }
 
-/* ─── Mobile vertical layout — simple dot-per-step approach ─── */
-function MobileSteps() {
+/* ─── Mobile vertical layout ─── */
+function MobileWorkflow() {
   return (
     <div className="flex flex-col lg:hidden" style={{ gap: 0 }}>
-      {steps.map((step, i) => {
-        const accent = i === 0 || i === 3 || i === 5;
-        const isLast = i === steps.length - 1;
+      {workflowSteps.map((step, i) => {
+        const isLast = i === workflowSteps.length - 1;
         return (
           <motion.div
             key={step.label}
@@ -132,7 +232,7 @@ function MobileSteps() {
 
             {/* Circle wrapper with dot */}
             <div style={{ flexShrink: 0, position: "relative", zIndex: 1 }}>
-              <NumberCircle number={step.number} accent={accent} />
+              <NumberCircle number={step.number} />
               {/* Orange dot at center of circle */}
               <motion.div
                 aria-hidden
@@ -186,26 +286,11 @@ function MobileSteps() {
                   fontSize: 13,
                   color: "#7A6F66",
                   lineHeight: 1.6,
-                  margin: "0 0 8px",
+                  margin: 0,
                 }}
               >
                 {step.body}
               </p>
-              <span
-                style={{
-                  fontFamily: "var(--font-bitter), Georgia, serif",
-                  fontSize: 11,
-                  fontWeight: 700,
-                  color: "#E8622A",
-                  backgroundColor: "rgba(232,98,42,0.08)",
-                  border: "1px solid rgba(232,98,42,0.20)",
-                  borderRadius: 100,
-                  padding: "3px 10px",
-                  display: "inline-block",
-                }}
-              >
-                {step.time}
-              </span>
             </div>
           </motion.div>
         );
@@ -218,7 +303,7 @@ export default function HowItWorks() {
   return (
     <section
       id="how-it-works"
-      style={{ padding: "56px 24px", backgroundColor: "#EDE8DF", scrollMarginTop: 120 }}
+      style={{ padding: "72px 24px", backgroundColor: "#EDE8DF", scrollMarginTop: 120 }}
     >
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         {/* Header */}
@@ -252,14 +337,53 @@ export default function HowItWorks() {
             letterSpacing: "-0.018em",
             color: "#1C2B3A",
             textAlign: "center",
-            margin: "0 auto 72px",
-            maxWidth: 560,
+            margin: "0 auto 48px",
+            maxWidth: 700,
             lineHeight: 1.15,
             fontFamily: "var(--font-bitter), Georgia, serif",
           }}
         >
-          Six steps from idea to shipped
+          Four artifact types, one workflow
         </motion.h2>
+
+        {/* Artifact Types Grid */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gap: 20,
+            marginBottom: 72,
+          }}
+        >
+          {artifactTypes.map((artifact) => (
+            <ArtifactCard key={artifact.name} artifact={artifact} />
+          ))}
+        </div>
+
+        {/* Workflow Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          style={{
+            textAlign: "center",
+            marginBottom: 56,
+          }}
+        >
+          <h3
+            style={{
+              fontFamily: "var(--font-bitter), Georgia, serif",
+              fontSize: "clamp(24px, 3vw, 36px)",
+              fontWeight: 700,
+              letterSpacing: "-0.018em",
+              color: "#1C2B3A",
+              margin: 0,
+            }}
+          >
+            Five-step workflow
+          </h3>
+        </motion.div>
 
         {/* Desktop: horizontal flow */}
         <div className="hidden lg:block" style={{ position: "relative" }}>
@@ -269,21 +393,21 @@ export default function HowItWorks() {
             style={{
               position: "absolute",
               top: 68,
-              left: "calc((100% - 80px) / 12)",
-              right: "calc((100% - 80px) / 12)",
+              left: "calc((100% - 48px) / 10)",
+              right: "calc((100% - 48px) / 10)",
               height: 1,
               borderTop: "1.5px dashed #D4CFC6",
               zIndex: 0,
             }}
           />
 
-          {/* Static dot persisting under Idea (first circle) */}
+          {/* Static dot persisting under first circle */}
           <div
             aria-hidden
             style={{
               position: "absolute",
               top: 63,
-              left: "calc((100% - 80px) / 12 - 5px)",
+              left: "calc((100% - 48px) / 10 - 5px)",
               width: 10,
               height: 10,
               borderRadius: "50%",
@@ -293,31 +417,30 @@ export default function HowItWorks() {
             }}
           />
 
-          {/* Single dot traveling left to right across all steps — once */}
+          {/* Single dot traveling left to right across all steps */}
           <motion.div
             aria-hidden
             initial={{
-              left: "calc((100% - 80px) / 12 - 5px)",
+              left: "calc((100% - 48px) / 10 - 5px)",
               scale: 1,
               opacity: 0.8,
             }}
             whileInView={{
               left: [
-                "calc((100% - 80px) * 1 / 12 - 5px)",
-                "calc((100% - 80px) * 3 / 12 + 16px - 5px)",
-                "calc((100% - 80px) * 5 / 12 + 32px - 5px)",
-                "calc((100% - 80px) * 7 / 12 + 48px - 5px)",
-                "calc((100% - 80px) * 9 / 12 + 64px - 5px)",
-                "calc((100% - 80px) * 11 / 12 + 80px - 5px)",
+                "calc((100% - 48px) * 1 / 10 - 5px)",
+                "calc((100% - 48px) * 3 / 10 + 12px - 5px)",
+                "calc((100% - 48px) * 5 / 10 + 24px - 5px)",
+                "calc((100% - 48px) * 7 / 10 + 36px - 5px)",
+                "calc((100% - 48px) * 9 / 10 + 48px - 5px)",
               ],
-              scale: [1, 1.3, 1, 1.3, 1, 1.3],
-              opacity: [0.8, 1, 0.8, 1, 0.8, 1],
+              scale: [1, 1.3, 1, 1.3, 1],
+              opacity: [0.8, 1, 0.8, 1, 0.8],
             }}
             viewport={{ once: true }}
             transition={{
-              duration: 6,
+              duration: 5,
               ease: "easeInOut",
-              times: [0, 0.2, 0.4, 0.6, 0.8, 1],
+              times: [0, 0.25, 0.5, 0.75, 1],
             }}
             style={{
               position: "absolute",
@@ -334,14 +457,13 @@ export default function HowItWorks() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(6, 1fr)",
-              gap: 16,
+              gridTemplateColumns: "repeat(5, 1fr)",
+              gap: 12,
               position: "relative",
               zIndex: 2,
             }}
           >
-            {steps.map((step, i) => {
-              const accent = i === 0 || i === 3 || i === 5;
+            {workflowSteps.map((step, i) => {
               return (
                 <motion.div
                   key={step.label}
@@ -353,7 +475,7 @@ export default function HowItWorks() {
                 >
                   {/* Hand-drawn number circle */}
                   <div style={{ marginBottom: 16, position: "relative", zIndex: 1 }}>
-                    <NumberCircle number={step.number} accent={accent} />
+                    <NumberCircle number={step.number} />
                   </div>
 
                   <span
@@ -370,7 +492,7 @@ export default function HowItWorks() {
                     {step.label}
                   </span>
 
-                  <h3
+                  <h4
                     style={{
                       fontFamily: "var(--font-bitter), Georgia, serif",
                       fontSize: 15,
@@ -382,7 +504,7 @@ export default function HowItWorks() {
                     }}
                   >
                     {step.title}
-                  </h3>
+                  </h4>
 
                   <p
                     style={{
@@ -390,27 +512,12 @@ export default function HowItWorks() {
                       color: "#7A6F66",
                       lineHeight: 1.65,
                       textAlign: "center",
-                      margin: "0 0 12px",
+                      margin: 0,
                       flex: 1,
                     }}
                   >
                     {step.body}
                   </p>
-
-                  <span
-                    style={{
-                      fontFamily: "var(--font-bitter), Georgia, serif",
-                      fontSize: 11,
-                      fontWeight: 700,
-                      color: "#E8622A",
-                      backgroundColor: "rgba(232,98,42,0.08)",
-                      border: "1px solid rgba(232,98,42,0.20)",
-                      borderRadius: 100,
-                      padding: "3px 10px",
-                    }}
-                  >
-                    {step.time}
-                  </span>
                 </motion.div>
               );
             })}
@@ -418,7 +525,7 @@ export default function HowItWorks() {
         </div>
 
         {/* Mobile: vertical stack */}
-        <MobileSteps />
+        <MobileWorkflow />
       </div>
     </section>
   );

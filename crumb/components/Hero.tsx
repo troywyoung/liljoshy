@@ -9,303 +9,84 @@ const fadeUp = (delay = 0) => ({
   transition: { duration: 0.6, ease: "easeOut" as const, delay },
 });
 
-/* ─── Sessions UI Mockup ──────────────────────────────────────────── */
-const sessionList = [
-  { name: "Reduce Shader Compile Stutter", time: "7m ago", active: true },
-  { name: "Build Idea: Campfire Ambient Loop", time: "20m ago", active: false },
-  { name: "Auth Token Refresh Logic", time: "1h ago", active: false },
-  { name: "Companion Dialogue Memory", time: "3h ago", active: false },
-  { name: "Photo Mode Cinematic Filters", time: "Yesterday", active: false },
-  { name: "Shader LOD System", time: "2d ago", active: false },
+/* ─── Terminal Mockup with Dust CLI Output ─────────────────────────── */
+const terminalLines = [
+  { type: "command", text: "$ dust tasks" },
+  { type: "output", text: "" },
+  { type: "output", text: "📋 Tasks" },
+  { type: "output", text: "" },
+  { type: "output", text: "Ready to work on:" },
+  { type: "output", text: "  • Add user authentication" },
+  { type: "output", text: "  • Implement dark mode toggle" },
+  { type: "output", text: "  • Optimize database queries" },
+  { type: "output", text: "" },
+  { type: "output", text: "Blocked:" },
+  { type: "output", text: "  • Deploy to staging (blocked by: Add user authentication)" },
+  { type: "output", text: "" },
+  { type: "command", text: "$ dust agent" },
+  { type: "output", text: "" },
+  { type: "output", text: "🤖 Agent Workflow" },
+  { type: "output", text: "" },
+  { type: "output", text: "Pick a task → implement it → delete the task file → commit atomically." },
+  { type: "output", text: "" },
+  { type: "output", text: "Next task: Add user authentication" },
+  { type: "output", text: "Location: .dust/tasks/add-user-authentication.md" },
+  { type: "output", text: "" },
+  { type: "command", text: "$ dust check" },
+  { type: "output", text: "" },
+  { type: "output", text: "✨ Running quality checks..." },
+  { type: "output", text: "" },
+  { type: "success", text: "✓ All tests passing" },
+  { type: "success", text: "✓ Type check passed" },
+  { type: "success", text: "✓ Lint passed" },
+  { type: "success", text: "✓ No blocked tasks with missing dependencies" },
+  { type: "output", text: "" },
+  { type: "success", text: "All validations passed!" },
 ];
 
-const toolCalls = [
-  {
-    icon: "⚡",
-    tool: "Bash",
-    command: "npm run test:shaders -- --watch=false",
-    time: "07:25:38",
-    summary: null,
-  },
-  {
-    icon: null,
-    tool: null,
-    command: null,
-    time: null,
-    summary: "3 tests failed: ShaderCache.spec.ts — precompile timeout, cache miss on hot reload, stutter on scene transition.",
-  },
-  {
-    icon: "📖",
-    tool: "Read",
-    command: "src/rendering/ShaderCache.ts",
-    time: "07:25:44",
-    summary: null,
-  },
-  {
-    icon: "✏️",
-    tool: "Edit",
-    command: "src/rendering/ShaderCache.ts · lines 84–112",
-    time: "07:25:51",
-    summary: null,
-  },
-  {
-    icon: null,
-    tool: null,
-    command: null,
-    time: null,
-    summary: "Added async precompile queue with priority scheduling. Cache now warms on scene load rather than first draw call.",
-  },
-  {
-    icon: "⚡",
-    tool: "Bash",
-    command: "npm run test:shaders -- --watch=false",
-    time: "07:26:04",
-    summary: null,
-  },
-  {
-    icon: null,
-    tool: null,
-    command: null,
-    time: null,
-    summary: "All 3 tests passing. Running full suite...",
-  },
-  {
-    icon: "⚡",
-    tool: "Bash",
-    command: "npm run test -- --coverage",
-    time: "07:26:12",
-    summary: null,
-  },
-];
-
-function SessionsMockup() {
+function TerminalMockup() {
   return (
     <div
       className="mockup-shrink"
       style={{
-        display: "flex",
-        height: 420,
-        backgroundColor: "#FFFFFF",
-        fontSize: 12,
-        overflow: "hidden",
+        backgroundColor: "#1C2B3A",
+        borderRadius: 8,
+        padding: "20px 24px",
+        fontFamily: "var(--font-geist-mono), 'Courier New', monospace",
+        fontSize: 13,
+        lineHeight: 1.6,
+        overflow: "auto",
+        maxHeight: 420,
       }}
     >
-      {/* Left sidebar */}
+      {terminalLines.map((line, i) => {
+        let color = "#D4CFC6";
+        if (line.type === "command") color = "#4ADE80";
+        if (line.type === "success") color = "#4ADE80";
+
+        return (
+          <div
+            key={i}
+            style={{
+              color,
+              whiteSpace: "pre-wrap",
+              wordBreak: "break-word",
+            }}
+          >
+            {line.text}
+          </div>
+        );
+      })}
       <div
         style={{
-          width: 220,
-          flexShrink: 0,
-          borderRight: "1px solid #E5E7EB",
-          backgroundColor: "#F8F8F8",
-          display: "flex",
-          flexDirection: "column",
+          display: "inline-block",
+          width: 8,
+          height: 16,
+          backgroundColor: "#4ADE80",
+          marginLeft: 4,
+          animation: "blink 1s infinite",
         }}
-      >
-        {/* Sidebar header */}
-        <div
-          style={{
-            padding: "12px 14px 10px",
-            borderBottom: "1px solid #E5E7EB",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <span style={{ fontSize: 11, fontWeight: 700, color: "#1C2B3A", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-            Sessions
-          </span>
-          <span
-            style={{
-              fontSize: 10,
-              backgroundColor: "rgba(232,98,42,0.12)",
-              color: "#E8622A",
-              borderRadius: 4,
-              padding: "2px 6px",
-              fontWeight: 600,
-            }}
-          >
-            + New
-          </span>
-        </div>
-        {/* Session list */}
-        <div style={{ overflowY: "auto", flex: 1 }}>
-          {sessionList.map((s) => (
-            <div
-              key={s.name}
-              style={{
-                padding: "10px 14px",
-                borderBottom: "1px solid rgba(229,231,235,0.5)",
-                backgroundColor: s.active ? "#EFF6FF" : "transparent",
-                borderLeft: s.active ? "3px solid #E8622A" : "3px solid transparent",
-                cursor: "pointer",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 11.5,
-                  fontWeight: s.active ? 600 : 400,
-                  color: s.active ? "#1C2B3A" : "#7A6F66",
-                  lineHeight: 1.4,
-                  marginBottom: 3,
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                {s.name}
-              </div>
-              <div style={{ fontSize: 10, color: "#7A6F66", opacity: 0.7 }}>{s.time}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Right panel */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-        {/* Panel header */}
-        <div
-          style={{
-            padding: "12px 18px",
-            borderBottom: "1px solid #E5E7EB",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            backgroundColor: "#FFFFFF",
-          }}
-        >
-          <div>
-            <span style={{ fontSize: 13, fontWeight: 600, color: "#1C2B3A" }}>
-              Reduce Shader Compile Stutter
-            </span>
-            <span
-              style={{
-                marginLeft: 10,
-                fontSize: 10,
-                backgroundColor: "rgba(74,222,128,0.12)",
-                color: "#16a34a",
-                borderRadius: 4,
-                padding: "2px 7px",
-                fontWeight: 600,
-                border: "1px solid rgba(74,222,128,0.3)",
-              }}
-            >
-              Running
-            </span>
-          </div>
-          <span style={{ fontSize: 10, color: "#7A6F66" }}>$0.34 · 2m 14s</span>
-        </div>
-
-        {/* Tool calls */}
-        <div
-          style={{
-            flex: 1,
-            overflowY: "auto",
-            padding: "12px 18px",
-            display: "flex",
-            flexDirection: "column",
-            gap: 4,
-          }}
-        >
-          {toolCalls.map((row, i) => {
-            if (row.summary) {
-              return (
-                <div
-                  key={i}
-                  style={{
-                    fontSize: 11.5,
-                    color: "#7A6F66",
-                    lineHeight: 1.5,
-                    padding: "6px 0 6px 14px",
-                    borderLeft: "2px solid #E5E7EB",
-                    marginLeft: 2,
-                    marginBottom: 4,
-                  }}
-                >
-                  {row.summary}
-                </div>
-              );
-            }
-            return (
-              <div
-                key={i}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  padding: "5px 8px",
-                  borderRadius: 6,
-                  backgroundColor: "#FAFAFA",
-                  border: "1px solid #E5E7EB",
-                }}
-              >
-                <span style={{ fontSize: 12, flexShrink: 0, opacity: 0.8 }}>{row.icon}</span>
-                <span
-                  style={{
-                    fontSize: 10.5,
-                    fontWeight: 600,
-                    color: "#1C2B3A",
-                    flexShrink: 0,
-                    width: 32,
-                  }}
-                >
-                  {row.tool}
-                </span>
-                <span
-                  style={{
-                    fontFamily: "var(--font-geist-mono), 'Courier New', monospace",
-                    fontSize: 10.5,
-                    color: "#1C2B3A",
-                    flex: 1,
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {row.command}
-                </span>
-                <span
-                  style={{
-                    fontFamily: "var(--font-geist-mono), 'Courier New', monospace",
-                    fontSize: 10,
-                    color: "#4ADE80",
-                    flexShrink: 0,
-                    marginLeft: 8,
-                  }}
-                >
-                  {row.time}
-                </span>
-              </div>
-            );
-          })}
-
-          {/* Blinking cursor row */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              padding: "5px 8px",
-              borderRadius: 6,
-              backgroundColor: "rgba(74,222,128,0.06)",
-              border: "1px solid rgba(74,222,128,0.2)",
-            }}
-          >
-            <span style={{ fontSize: 10.5, color: "#4ADE80", fontWeight: 600 }}>▶</span>
-            <span style={{ fontSize: 11, color: "#7A6F66", fontStyle: "italic" }}>
-              Analyzing test results…
-            </span>
-            <span
-              style={{
-                width: 6,
-                height: 12,
-                backgroundColor: "#4ADE80",
-                display: "inline-block",
-                opacity: 0.8,
-              }}
-            />
-          </div>
-        </div>
-      </div>
+      />
     </div>
   );
 }
@@ -366,24 +147,24 @@ export default function Hero() {
                 display: "inline-block",
               }}
             />
-            Open source · Invite-only beta
+            Open source · MIT license
           </span>
         </motion.div>
 
-        {/* Pre-headline */}
+        {/* Tagline */}
         <motion.p
           {...fadeUp(0.05)}
           style={{
             fontFamily: "var(--font-bitter), Georgia, serif",
             fontSize: "clamp(16px, 2.2vw, 20px)",
             fontWeight: 500,
-            color: "#1C2B3A",
+            color: "#E8622A",
             letterSpacing: "-0.009em",
             lineHeight: 1.3,
             margin: "0 0 16px",
           }}
         >
-          The model isn&apos;t the problem. The workflow is.
+          Flow state for AI coding agents.
         </motion.p>
 
         {/* H1 */}
@@ -399,9 +180,9 @@ export default function Hero() {
             fontFamily: "var(--font-bitter), Georgia, serif",
           }}
         >
-          Stop babysitting
+          Stop managing agents.
           <br />
-          <span style={{ color: "#E8622A" }}>your agents.</span>
+          <span style={{ color: "#E8622A" }}>Start building.</span>
         </motion.h1>
 
         {/* Subhead */}
@@ -415,8 +196,8 @@ export default function Hero() {
             maxWidth: 560,
           }}
         >
-          Give Claude Code structured specs, persistent context, and automated quality gates.
-          Crumb runs your agents while you&apos;re away — and gets smarter every session.
+          Dust structures your project so AI agents can understand what needs to be done and execute systematically.
+          Agents read tasks, implement changes, and commit atomically — no manual management required.
         </motion.p>
 
         {/* CTAs */}
@@ -432,10 +213,12 @@ export default function Hero() {
           }}
         >
           <a
-            href="#apply"
+            href="https://github.com/joshski/dust"
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
               backgroundColor: "#E8622A",
-              color: "#1C2B3A",
+              color: "#FFFFFF",
               textDecoration: "none",
               fontSize: 15,
               fontWeight: 700,
@@ -455,10 +238,10 @@ export default function Hero() {
               e.currentTarget.style.transform = "translateY(0)";
             }}
           >
-            Apply for Early Access →
+            View on GitHub →
           </a>
           <a
-            href="https://github.com/crumb-dev/crumb"
+            href="https://github.com/joshski/dust#readme"
             target="_blank"
             rel="noopener noreferrer"
             style={{
@@ -484,7 +267,7 @@ export default function Hero() {
               e.currentTarget.style.backgroundColor = "transparent";
             }}
           >
-            View on GitHub
+            Read Documentation
           </a>
         </motion.div>
 
@@ -493,10 +276,10 @@ export default function Hero() {
           {...fadeUp(0.4)}
           style={{ fontSize: 12, color: "#7A6F66", margin: "0 0 24px" }}
         >
-          Free to start · No credit card · 2-minute setup
+          Open source · MIT license · Install in 2 minutes
         </motion.p>
 
-        {/* Sessions Tab Mockup in Browser Chrome */}
+        {/* Terminal Mockup */}
         <motion.div
           {...fadeUp(0.5)}
           style={{
@@ -509,11 +292,11 @@ export default function Hero() {
             boxShadow: "0 8px 40px rgba(0,0,0,0.08)",
           }}
         >
-          {/* Browser chrome */}
+          {/* Terminal chrome */}
           <div
             style={{
-              backgroundColor: "#F5F5F5",
-              borderBottom: "1px solid #E5E7EB",
+              backgroundColor: "#2D3748",
+              borderBottom: "1px solid #1C2B3A",
               padding: "10px 16px",
               display: "flex",
               alignItems: "center",
@@ -524,57 +307,24 @@ export default function Hero() {
               {["#FF5F57", "#FFBD2E", "#28C840"].map((c) => (
                 <div
                   key={c}
-                  style={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: c, opacity: 0.6 }}
+                  style={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: c, opacity: 0.8 }}
                 />
               ))}
             </div>
             <div
               style={{
-                flex: 1,
-                maxWidth: 320,
-                margin: "0 auto",
-                backgroundColor: "#FFFFFF",
-                border: "1px solid #E5E7EB",
-                borderRadius: 6,
-                padding: "4px 12px",
+                fontFamily: "var(--font-geist-mono), 'Courier New', monospace",
                 fontSize: 11,
-                color: "#7A6F66",
-                textAlign: "center",
+                color: "#D4CFC6",
+                marginLeft: 12,
               }}
             >
-              app.crumb.dev/sessions
+              dust — terminal
             </div>
           </div>
 
-          {/* Nav tabs inside mockup */}
-          <div
-            style={{
-              backgroundColor: "#F8F8F8",
-              borderBottom: "1px solid #E5E7EB",
-              display: "flex",
-              gap: 0,
-              padding: "0 16px",
-            }}
-          >
-            {["Ideas", "Sessions", "Insights"].map((tab) => (
-              <div
-                key={tab}
-                style={{
-                  padding: "8px 16px",
-                  fontSize: 12,
-                  fontWeight: tab === "Sessions" ? 600 : 400,
-                  color: tab === "Sessions" ? "#E8622A" : "#7A6F66",
-                  borderBottom: tab === "Sessions" ? "2px solid #E8622A" : "2px solid transparent",
-                  cursor: "pointer",
-                }}
-              >
-                {tab}
-              </div>
-            ))}
-          </div>
-
-          {/* Sessions UI */}
-          <SessionsMockup />
+          {/* Terminal content */}
+          <TerminalMockup />
         </motion.div>
       </div>
     </section>

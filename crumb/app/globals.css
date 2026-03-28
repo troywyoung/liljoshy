@@ -47,6 +47,11 @@ body {
 ::-webkit-scrollbar-track { background: #F5F0E8; }
 ::-webkit-scrollbar-thumb { background: #D4CFC6; border-radius: 3px; }
 
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
 /* ── Mobile responsiveness overrides ──
    These use !important to override inline styles where
    Tailwind classes alone can't win against style={{}} */

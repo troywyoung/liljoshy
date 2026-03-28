@@ -21,23 +21,12 @@ export default function QuickStart() {
             letterSpacing: "-0.016em",
             color: "#1C2B3A",
             textAlign: "center",
-            margin: "0 0 8px",
+            margin: "0 0 24px",
             lineHeight: 1.2,
           }}
         >
-          Get started in <span style={{ color: "#E8622A" }}>4 commands</span>
+          Two commands to start
         </h3>
-        <p
-          style={{
-            fontSize: 13,
-            color: "#7A6F66",
-            textAlign: "center",
-            margin: "0 0 24px",
-            lineHeight: 1.5,
-          }}
-        >
-          No config files. No dashboard signup. Just install, describe what you want, and ship.
-        </p>
 
         {/* Terminal window */}
         <div
@@ -88,22 +77,44 @@ export default function QuickStart() {
               color: "#E5E0D7",
             }}
           >
-            <div>
+            <div style={{ marginBottom: "12px" }}>
               <span style={{ color: "#7A6F66" }}>$ </span>
-              <span>npm install -g crumb</span>
+              <span>npm install --save-dev @joshski/dust</span>
+            </div>
+            <div style={{ marginBottom: "20px" }}>
+              <span style={{ color: "#7A6F66" }}>$ </span>
+              <span>npx dust init</span>
+            </div>
+
+            <div style={{ color: "#7A6F66", fontSize: 12, marginBottom: "8px" }}>
+              # Three steps to flow state:
+            </div>
+
+            <div style={{ marginBottom: "8px" }}>
+              <span style={{ color: "#7A6F66" }}>$ </span>
+              <span style={{ color: "#E8622A" }}># 1. Install and initialize</span>
+            </div>
+            <div style={{ marginBottom: "12px", paddingLeft: "24px", color: "#B8B3A9" }}>
+              Already done above
+            </div>
+
+            <div style={{ marginBottom: "8px" }}>
+              <span style={{ color: "#7A6F66" }}>$ </span>
+              <span style={{ color: "#E8622A" }}># 2. Create your first task</span>
+            </div>
+            <div style={{ marginBottom: "12px" }}>
+              <span style={{ color: "#7A6F66" }}>$ </span>
+              <span>npx dust task </span>
+              <span style={{ color: "#E8622A" }}>&quot;Add user authentication&quot;</span>
+            </div>
+
+            <div style={{ marginBottom: "8px" }}>
+              <span style={{ color: "#7A6F66" }}>$ </span>
+              <span style={{ color: "#E8622A" }}># 3. Let agent implement it</span>
             </div>
             <div>
               <span style={{ color: "#7A6F66" }}>$ </span>
-              <span>crumb init</span>
-            </div>
-            <div>
-              <span style={{ color: "#7A6F66" }}>$ </span>
-              <span>crumb spec </span>
-              <span style={{ color: "#E8622A" }}>&quot;Add dark mode toggle with system preference detection&quot;</span>
-            </div>
-            <div>
-              <span style={{ color: "#7A6F66" }}>$ </span>
-              <span>crumb run</span>
+              <span>npx dust agent</span>
             </div>
           </div>
         </div>

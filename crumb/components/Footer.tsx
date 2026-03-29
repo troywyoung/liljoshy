@@ -1,11 +1,15 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
+import { IconSparkle } from "./HandDrawnIcons";
 
-const footerLinks = [
-  { label: "GitHub", href: "https://github.com/joshski/dust", external: true },
-  { label: "Documentation", href: "https://github.com/joshski/dust#readme", external: true },
-  { label: "NPM Package", href: "https://www.npmjs.com/package/@joshski/dust", external: true },
+const navLinks = [
+  { label: "Features", href: "#features" },
+  { label: "How it Works", href: "#how-it-works" },
+  { label: "Pricing", href: "#pricing" },
+  { label: "GitHub", href: "https://github.com/crumb-dev/crumb" },
+  { label: "Apply", href: "#apply" },
 ];
 
 export default function Footer() {
@@ -13,101 +17,84 @@ export default function Footer() {
   return (
     <footer
       style={{
-        backgroundColor: "#1C2B3A",
-        borderTop: "1px solid rgba(212, 207, 198, 0.15)",
-        padding: "56px 24px 40px",
+        backgroundColor: "#EDE8DF",
+        borderTop: "1px solid #D4CFC6",
+        padding: "48px 24px 36px",
       }}
     >
       <div
         style={{
           maxWidth: 1100,
           margin: "0 auto",
-          display: "flex",
-          flexDirection: "column",
+          display: "grid",
           gap: 32,
+          alignItems: "start",
         }}
+        className="grid-cols-1 md:grid-cols-[1fr_auto_1fr]"
       >
-        {/* Top: Logo/Name and Links */}
-        <div
-          style={{
-            display: "grid",
-            gap: 40,
-            gridTemplateColumns: "1fr",
-          }}
-          className="md:grid-cols-[1fr_auto]"
-        >
-          {/* Left: Brand */}
-          <div>
-            <a
-              href="/"
-              style={{
-                display: "inline-block",
-                fontSize: 24,
-                fontWeight: 700,
-                color: "#F5F0E8",
-                textDecoration: "none",
-                marginBottom: 12,
-                fontFamily: "var(--font-bitter), Georgia, serif",
-                letterSpacing: "-0.01em",
-              }}
-            >
-              dust
-            </a>
-            <p
-              style={{
-                fontSize: 14,
-                color: "#D4CFC6",
-                lineHeight: 1.65,
-                margin: 0,
-                maxWidth: 360,
-              }}
-            >
-              Flow state for AI coding agents. Dust structures your project so agents can understand what needs to be done and execute systematically.
-            </p>
-          </div>
-
-          {/* Right: Links */}
-          <nav style={{ display: "flex", flexDirection: "column", gap: 12, paddingTop: 4 }}>
-            {footerLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target={link.external ? "_blank" : undefined}
-                rel={link.external ? "noopener noreferrer" : undefined}
-                style={{
-                  fontSize: 14,
-                  color: "#D4CFC6",
-                  textDecoration: "none",
-                  transition: "color 0.2s",
-                  fontWeight: 500,
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#E8622A")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "#D4CFC6")}
-              >
-                {link.label} {link.external && "↗"}
-              </a>
-            ))}
-          </nav>
+        {/* Left: Brand */}
+        <div>
+          <a
+            href="/"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              textDecoration: "none",
+              marginBottom: 10,
+            }}
+          >
+            <Image src="/crumb-logo.png" alt="Crumb" width={120} height={84} style={{ objectFit: "contain" }} />
+          </a>
+          <p
+            style={{
+              fontSize: 13,
+              color: "#7A6F66",
+              lineHeight: 1.65,
+              margin: "0 0 16px",
+              maxWidth: 240,
+            }}
+          >
+            Structured specs, async execution, and quality gates for Claude Code.
+          </p>
+          <p style={{ fontSize: 12, color: "#7A6F66", margin: 0 }}>
+            © {year} Crumb. Open source.
+          </p>
         </div>
 
-        {/* Bottom: License and Credits */}
-        <div
-          style={{
-            paddingTop: 24,
-            borderTop: "1px solid rgba(212, 207, 198, 0.15)",
-            display: "flex",
-            flexDirection: "column",
-            gap: 8,
-          }}
-          className="md:flex-row md:justify-between md:items-center"
-        >
-          <p style={{ fontSize: 13, color: "#7A6F66", margin: 0 }}>
-            © {year} Dust. Open source under MIT license.
-          </p>
-          <p style={{ fontSize: 13, color: "#7A6F66", margin: 0 }}>
-            Made by{" "}
+        {/* Center: Nav links */}
+        <nav style={{ display: "flex", flexDirection: "column", gap: 10, paddingTop: 4 }}>
+          {navLinks.map((link) => (
             <a
-              href="https://github.com/joshski"
+              key={link.label}
+              href={link.href}
+              style={{
+                fontSize: 13,
+                color: "#7A6F66",
+                textDecoration: "none",
+                transition: "color 0.2s",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#1C2B3A")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#7A6F66")}
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
+
+        {/* Right: Built with LilJosh */}
+        <div className="text-center md:text-right">
+          <p
+            style={{
+              fontSize: 13,
+              color: "#7A6F66",
+              margin: 0,
+              lineHeight: 1.6,
+            }}
+          >
+            Built with{" "}
+            <a
+              href="https://liljosh.dev"
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -118,7 +105,18 @@ export default function Footer() {
               onMouseEnter={(e) => (e.currentTarget.style.textDecoration = "underline")}
               onMouseLeave={(e) => (e.currentTarget.style.textDecoration = "none")}
             >
-              Josh
+              LilJosh
+            </a>{" "}
+            <IconSparkle size={14} color="#E8622A" />
+          </p>
+          <p style={{ fontSize: 11, color: "#7A6F66", marginTop: 8 }}>
+            <a
+              href="mailto:hello@crumb.dev"
+              style={{ color: "#7A6F66", textDecoration: "none" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#1C2B3A")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#7A6F66")}
+            >
+              hello@crumb.dev
             </a>
           </p>
         </div>

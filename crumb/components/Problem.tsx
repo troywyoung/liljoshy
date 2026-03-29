@@ -6,24 +6,24 @@ import { motion } from "framer-motion";
 const problems = [
   {
     num: "01",
-    title: "Context loss",
-    pull: "Every session starts from zero.",
+    title: "Planning is disposable",
+    pull: "Every chat session starts from zero.",
     body:
-      "Agents forget requirements between conversations. Manual context management doesn't scale. You spend time re-briefing instead of shipping.",
+      "You spend 20 minutes briefing your agent in a thread that disappears. Next session you start over. No canonical spec, no shared memory — just orphaned conversations.",
   },
   {
     num: "02",
-    title: "Ambiguous requirements",
-    pull: "Without specs, agents improvise.",
+    title: "Agents guess what you want",
+    pull: "Without structure, agents improvise.",
     body:
-      "Code compiles but misses the point. Rework loops burn time. You find out after it's built that the agent guessed wrong.",
+      "They optimize for plausible-sounding output, not your actual intent. The result is code that compiles but misses the point — and you find out after it's built.",
   },
   {
     num: "03",
-    title: "No quality control",
-    pull: "Agents can't self-check.",
+    title: "You become the bottleneck",
+    pull: "The whole point was to delegate.",
     body:
-      "Bugs ship because there are no gates. You become the QA bottleneck, manually verifying every change before it merges.",
+      "Agents stall at ambiguities. You monitor progress, unblock edge cases, re-run failures. You're still glued to the screen, shepherding every task from start to finish.",
   },
 ];
 

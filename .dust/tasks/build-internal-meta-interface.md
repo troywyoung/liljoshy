@@ -1,6 +1,6 @@
 # Build internal meta interface
 
-Build the first internal product-owner interface for managing app variants. Let the owner edit the chosen configuration fields directly in the browser and prepare the system for fast iteration on prompts, design, and messaging.
+Build the first internal product-owner interface for managing app variants. Let the owner edit the selected configuration fields directly in the browser and prepare the system for fast iteration on prompts, design, and messaging.
 
 ## Task Type
 

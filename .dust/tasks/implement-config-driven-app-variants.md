@@ -1,6 +1,6 @@
 # Implement config-driven app variants
 
-Refactor the app to load product behavior from configuration instead of a single hardcoded Hot Take setup. This creates the technical foundation for running related applications with different prompts, messaging, and styling from one system.
+Refactor the app to load product behavior from configuration instead of a single hardcoded Hot Take setup. Use the defined application model so one runtime can support related applications with different prompts, messaging, styling, and feature flags from a structured configuration source.
 
 ## Task Type
 
@@ -13,7 +13,8 @@ implement
 
 ## Definition of Done
 
-- The running app reads its product identity, prompt configuration, and user messaging from a structured configuration source.
+- The running app reads its product identity, prompt configuration, user messaging, and key presentation settings from a structured configuration source.
 - Hot Take remains supported as the default configured application.
 - A second example configuration exists for a related variant such as True Confessions.
 - Shared runtime behavior is separated from variant-specific content and presentation settings.
+- The implementation follows the configuration boundaries defined in the meta application model task.

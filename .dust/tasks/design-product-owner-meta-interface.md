@@ -1,6 +1,6 @@
 # Design product owner meta interface
 
-Design the first internal interface for configuring app variants. Specify the minimum product-owner workflows for editing prompt structure, design system choices, user-facing copy, and duplicate-app creation so implementation can stay focused on the smallest useful admin surface.
+Design the first internal interface for configuring app variants. Define the minimum product-owner workflows for editing prompt structure, design system choices, user-facing copy, and duplicate-app creation so implementation can stay focused on the smallest useful admin surface.
 
 ## Task Type
 
